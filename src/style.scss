@@ -1,0 +1,531 @@
+/* CREDIT : YEK/SASS (https://github.com/yek-org/yek-sass) */
+@mixin --clear-input {
+  @include --clear-space;
+  @include size($tog: 100%);
+  letter-spacing: 1.7px;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  stroke: none;
+}
+// TODO : use as default _font-urls()//
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lalezar&display=swap"); // NOTE : lalezar font
+@import url("https://cdn.jsdelivr.net/npm/yekan-font@1.0.0/css/yekan-font.min.css"); // NOTE : yekan font
+
+// TODO : cut/past on default YEK/SASS
+@mixin --default {
+  :root {
+    --font-family: "Roboto", "sans-serif" !important;
+    --c-primary: #1a2554;
+    --c-secondary: #a5b3d4;
+    --c-gray: #dce5f2;
+    --c-white: #f2f5fb;
+    --c-input-hover: rgba(165, 179, 212, 60%);
+    --c-input-focus: rgba(26, 37, 84, 45%);
+
+    --c-primary: #ecb365;
+    --c-secondary: #2bbdff /* ALT :  #5296b5 */;
+    --c-gray: #064663;
+    --c-white: #04293a;
+    --c-input-hover: #06466399;
+    --c-input-focus: #06466373;
+
+    --folder-size: 60px;
+    --folder-radius: 8px;
+    --folder-color: #1d1e22;
+    --folder-color: var(--c-secondary);
+    --folder-empty-hover-shadow: -1px -2.5px 1.3rem -0.1rem
+      rgba(90, 105, 140, 0.5);
+    --folder-thumb-color: whitesmoke;
+
+    --file-badge-color: #5a5a5a;
+    --file-cleaner-color: var(--window-color);
+    --file-color: #e1dfe1;
+    --file-width: 45px;
+    --file-height: calc(var(--file-width) * 1.35);
+    --file-shadow: 0 0 0 3px var(--file-badge-color);
+    --file-tr-radius: 15px;
+    --file-badge-radius: calc(var(--file-badge-radius) * 6);
+    --file-hover-shadow: 0.2rem 0.7rem 0.3rem 0 rgba(6, 6, 6, 0.2);
+
+    --window-radius: 8px;
+    --window-color: #1d1e22;
+    --window-color: var(--c-secondary);
+    --window-shadow: -1px -2.5px 1.3rem -0.1rem rgba(90, 105, 140, 0.5);
+    --window-size: 90%;
+    --window-header-height: 30px;
+    --window-button-size: 16px;
+    --window-color: #f5f5f5;
+    --window-close-color: #ff605c;
+    --window-minimum-color: #e5e117;
+    --window-maximum-color: #00ca4e;
+    --window-close-hover-color: #ba5351;
+    --window-minimum-hover-color: #be8d34;
+    --window-maximum-hover-color: #038033;
+    --window-header-color: #c0bfc0;
+    --window-body-color: #f5f5f5;
+    --window-light-color: #e1dfe1;
+
+    --window-position-x: 15px;
+    --window-position-y: 15px;
+  }
+}
+
+@include --default;
+
+.visible-hidden {
+  visibility: hidden;
+}
+
+body {
+  background-color: var(--c-white);
+  background: url("https://wallpaperaccess.com/download/macos-big-sur-3887377");
+  background-size: cover;
+  color: var(--c-secondary);
+  font-family: var(--font-family);
+}
+
+#blog-os {
+  width: 100vw;
+  height: 100vh;
+}
+
+/* __ FOLDER __ */
+.window .folder__header {
+  color: var(--c-white);
+}
+.folder {
+  &,
+  & * {
+    user-select: none;
+  }
+
+  @include --fcenter;
+  padding: 16px;
+  padding-top: 36px;
+  border-radius: var(--folder-radius);
+
+  /* ALT : width: var(--folder-size); */
+  width: calc(var(--folder-size) + 48px);
+  /* ALT : height: calc(var(--folder-size) + 15px); */
+  height: calc(var(--folder-size) + 56px);
+
+  &__header {
+    @include size(100%, 35px);
+    margin-top: 9px;
+    text-align: center;
+    order: 1;
+    color: var(--window-color);
+  }
+
+  &__icon,
+  &__back,
+  &__thumb,
+  &__front {
+    width: var(--folder-size);
+    height: calc(var(--folder-size) * 0.75);
+    border-radius: var(--folder-radius);
+  }
+
+  &__icon {
+    @include relative;
+  }
+
+  &__badge,
+  &__badge::before,
+  &__back,
+  &__thumb,
+  &__front {
+    @include absolute;
+    background: var(--folder-color);
+  }
+
+  &__back {
+    border-top-left-radius: 0;
+  }
+
+  &__front {
+    transform-origin: bottom right;
+    transition: transform 0.3s;
+  }
+
+  &__thumb {
+    background: var(--folder-thumb-color);
+    transform: scaleX(0.95) scaleY(0.8);
+    transform-origin: bottom;
+    transition: transform 0.3s;
+    opacity: 0;
+  }
+
+  &__badge {
+    width: calc(var(--folder-size) / 3);
+    height: calc(var(--folder-size) / 10);
+    top: calc(0px - (var(--folder-size) / 10));
+    border-top-left-radius: var(--folder-radius);
+    border-top-right-radius: var(--folder-radius);
+    transition: width 0.3s 0.3s, height 0.3s 0.3s, top 0.3s 0.3s;
+  }
+  &__badge::before {
+    content: "";
+    display: inline-block;
+    width: 70%;
+    height: 100%;
+    top: 0;
+    left: 50%;
+    border-top-right-radius: calc(var(--folder-radius) / 1.5);
+    transform: skew(45deg);
+    transition: width 0.3s 0.3s, height 0.3s 0.3s, top 0.3s 0.3s;
+  }
+
+  &--empty &__thumb {
+    background: transparent;
+  }
+  &--empty &__icon:hover &__front {
+    box-shadow: var(--folder-empty-hover-shadow);
+  }
+  &:hover &__icon &__front {
+    transform: skew(-10deg) scaleY(0.85);
+  }
+  &:hover &__icon &__thumb {
+    /* transform: scaleX(0.95) scaleY(0.95); */
+    transform: scaleX(0.95) scaleY(0.95) translate(-1px, -1px) skewX(-3deg)
+      skewY(1deg);
+    /* transform: scaleX(0.98) scaleY(0.98) translate(-1px, -1px) skewX(-5deg)
+      skewY(1deg); */
+    border-radius: 5px;
+    opacity: 1;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+/* __ FOLDER-OPEN __ */
+/* .folder {
+  --folder-open-width: 640px;
+
+  &--open {
+    @include --clear-space;
+    margin: auto;
+    border: none;
+    width: var(--folder-open-width);
+    height: calc(var(--folder-open-width) * 0.6);
+  }
+
+  &--open &__header {
+    order: 0;
+    height: 30px;
+    background: var(--c-secondary);
+    border-top-right-radius: var(--folder-radius);
+    border-top-left-radius: var(--folder-radius);
+    color: var(--c-primary);
+    @include --fcenter;
+    margin: 0;
+  }
+
+  &--open &__icon {
+    width: 100%;
+    height: calc((var(--folder-open-width) * 0.6) + 30px);
+    background: var(--c-gray);
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+  }
+
+  &--open &__icon *:not(&__thumb) {
+    display: none;
+  }
+
+  &--open &__thumb {
+    --folder-button-size: 18px;
+    width: var(--folder-button-size);
+    height: var(--folder-button-size);
+    top: calc(-7px - var(--folder-button-size));
+    left: 10px;
+    border-radius: 50%;
+    opacity: 1;
+    background: #f44336;
+  }
+}
+
+/* __ FILE __ */
+.file {
+  &,
+  & * {
+    user-select: none;
+  }
+
+  @include --fcenter;
+  flex-direction: column;
+  padding: 9px;
+  padding-top: 36px;
+  width: calc(var(--file-width) * 3);
+  height: calc(var(--file-height) * 2.5);
+
+  &__header {
+    @include size(100%, 35px);
+    margin-top: 9px;
+    text-align: center;
+    order: 1;
+  }
+
+  &__icon {
+    @include relative;
+    @include size(var(--file-width), var(--file-height));
+    display: inline-block;
+    transform: scaleX(1) scaleY(1);
+    border-radius: 4px;
+    cursor: pointer;
+    background: var(--file-color);
+  }
+
+  /* HINT : cleaner-badge */
+  &__icon::after {
+    content: "";
+    position: absolute;
+    background-color: var(--file-cleaner-color);
+    top: -7px;
+    right: -7px;
+    width: 14px;
+    height: 14px;
+    transform: rotate(45deg);
+  }
+
+  /* HINT : flip-badge */
+  &__icon::before {
+    content: "";
+    position: absolute;
+    background-color: var(--file-badge-color);
+    top: 0;
+    right: 0;
+    width: 14px;
+    height: 14px;
+    // border-top-right-radius: var(--file-badge-radius);
+  }
+
+  &__icon {
+    border-top-right-radius: var(--file-tr-radius);
+  }
+
+  &:hover &__icon {
+    // box-shadow: var(--file-hover-shadow);
+    transform: scale(1.1);
+  }
+
+  &--open {
+    opacity: 0;
+    @include size(100%, 100%);
+  }
+}
+
+/* __ WINDOW __ */
+.window {
+--window-distance-y: 20px;
+    --window-distance-x: 250px;
+
+  &,
+  & * {
+    user-select: none;
+  }
+  &:not(&--open) {
+    --window-position-x: 50%;
+    --window-position-y: 50%;
+    transform: translate(-50%, -50%);
+  }
+  &--movable {
+    
+    transition: 0s 0s ease !important;
+  }
+
+  & {
+    @include fixed(
+      calc(var(--window-position-y) - var(--window-distance-y)),
+      calc(var(--window-position-x) - var(--window-distance-x))
+    );
+    @include --clear-space;
+    @include --fcenter;
+    min-width: 340px;
+    @include size(0px, 0px);
+    opacity: 0;
+    margin: auto;
+    border: none;
+    border-radius: var(--window-radius);
+    box-shadow: var(--window-shadow);
+  }
+
+  &__header {
+    @include --fcenter;
+    @include relative;
+    @include size(100%, var(--window-header-height));
+    border-top-right-radius: var(--window-radius);
+    border-top-left-radius: var(--window-radius);
+    text-align: center;
+    color: var(--c-gray);
+    background: var(--window-header-color);
+    &:active {
+      cursor: move;
+    }
+  }
+
+  &__actions {
+    @include flex;
+    @include absolute($top: 0, $left: 0, $bottom: 0);
+    @include size(35%, 100%);
+  }
+
+  &__btn {
+    @include relative;
+    @include --clear-btn;
+    background: var(--window-body-color);
+
+    &--backward,
+    &--forward {
+      @include --fcenter;
+      width: calc(var(--window-button-size) + 9px);
+      height: calc(var(--window-button-size) + 4px);
+      top: calc(
+        (var(--window-header-height) / 3) - (var(--window-button-size) / 3.5)
+      );
+      padding-top: 3px;
+      border-radius: 4px;
+      font-size: 80%;
+    }
+
+    &--backward {
+      margin-left: calc(var(--window-button-size) + 9px);
+    }
+    &--forward {
+      margin-left: 4px;
+    }
+
+    &--close,
+    &--minimum,
+    &--maximum {
+      width: var(--window-button-size);
+      height: var(--window-button-size);
+      top: calc(
+        (var(--window-header-height) / 2) - (var(--window-button-size) / 2)
+      );
+      // left: calc(var(--window-button-size) - 6px);
+      margin-left: calc(var(--window-button-size) - 7px);
+      border-radius: 50%;
+    }
+
+    &--close {
+      margin-left: calc(var(--window-button-size) - 4px);
+      background: var(--window-close-color);
+    }
+    &--minimum {
+      background: var(--window-minimum-color);
+    }
+    &--maximum {
+      background: var(--window-maximum-color);
+    }
+
+    &--close:hover {
+      background: var(--window-close-hover-color);
+    }
+    &--minimum:hover {
+      background: var(--window-minimum-hover-color);
+    }
+    &--maximum:hover {
+      background: var(--window-maximum-hover-color);
+    }
+  }
+
+  &__view {
+    @include relative;
+    @include size(100%, calc(100% - var(--window-header-height)));
+    border-radius: var(--window-radius);
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    background: var(--window-color);
+    color: var(--c-white);
+    @include --clear-space;
+    z-index: 99999999;
+    overflow: hidden;
+  }
+
+  &--open {
+    @include size(95vw, 95vh);
+    opacity: 1;
+    transform: none;
+  }
+
+  &--collaps {
+    --window-distance-x: 62px;
+    width: 135px !important;
+    height: var(--window-header-height) !important;
+    min-width: 135px;
+    overflow: hidden;
+  }
+  &--collaps &__title {
+    margin-left: 32px;
+  }
+  &--collaps &__btn {
+    width: calc(var(--window-button-size) - 9px) !important;
+    height: calc(var(--window-button-size) - 4px) !important;
+    &--maximum {
+      display: none;
+    }
+    &--backward,
+    &--forward {
+      display: none;
+    }
+  }
+}
+
+/* __ WINDOW-VIEW __ */
+.window {
+  &__view--iframe {
+    overflow: hidden;
+  }
+  &__view--ul {
+  }
+
+  &__files {
+    @include --clear-list;
+    @include flex;
+    @include size;
+    @include aligns(flex-start);
+    overflow: hidden;
+    overflow-y: auto;
+  }
+
+  &__file .folder {
+    margin-top: 29px;
+  }
+  &__file .file {
+  }
+
+  &__content {
+    border: none;
+    outline: none;
+    stroke: none;
+    box-shadow: none;
+    @include --fcenter;
+    @include --clear-space;
+    margin-top: -58px;
+    height: calc(100% + 58px);
+    width: 100%;
+  }
+}
+
+@media (max-width: 830px) {
+  .window__btn {
+    &--backward,
+    &--forward {
+      display: none;
+    }
+  }
+  .window__content {
+    margin-top: -50px;
+    height: calc(100% + 50px);
+  }
+}
+
+@media (min-width: 1000px) {
+  .window {
+    @include size(900px);
+  }
+}
